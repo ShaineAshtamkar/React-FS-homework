@@ -2,11 +2,11 @@ import { useState } from 'react'
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 import '../App.css'
-import { Company } from './Components/Company.jsx'
+import { Company } from './Company.jsx'
 
-import { Wardrobe } from './Components/Wardrobe.jsx'
+import { Wardrobe } from './Wardrobe.jsx'
 
-import { Wardrobe2 } from './Components/Wardrobe2.jsx'
+import { Wardrobe2 } from './Wardrobe2.jsx'
 
 
 
