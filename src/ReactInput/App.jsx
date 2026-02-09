@@ -5,6 +5,8 @@ import '../App.css'
 import { InputTest } from './InputState'
 import Exercise1 from './Exercise1'
 import Exercise2 from './Exercise2'
+import Quotes from '../ReactDataFlow/Quotes'
+import SpotCheck1 from '../ReactDataFlow/SpotCheck1'
 
 export default function App() {
 
@@ -14,6 +16,8 @@ export default function App() {
             <InputTest />
             <Exercise1 />
             <Exercise2 />
+            <Quotes />
+            <SpotCheck1 />
         </div>
     )
 }

@@ -10,7 +10,6 @@ import { Wardrobe2 } from './Wardrobe2.jsx'
 
 
 
-
 export default function App() {
     let companies = [
         { name: "Tesla", revenue: 140 },
