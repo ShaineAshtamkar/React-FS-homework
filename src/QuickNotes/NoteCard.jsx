@@ -1,6 +1,6 @@
 import "./App.css";
 
-export default function NoteCard({ key, index, note, onDelete, onOpen }) {
+export default function NoteCard({ key, index, note, onDelete, onOpen, cats }) {
     function formatDate(isoString) {
         const date = new Date(isoString);
 
@@ -15,13 +15,15 @@ export default function NoteCard({ key, index, note, onDelete, onOpen }) {
 
 
     return (
-        <div className="noteCard" onClick={() => onOpen(note)}>
+        <div className="noteCard" onClick={() => onOpen(note)} style={{ background: cats[note.category] || "white" }} >
             <button className="deleteBtn" onClick={(e) => { onDelete(index); e.stopPropagation(); }} >Delete</button>
+            <div className="categoryTag">{note.category}</div>
             {note.title ? <div className="noteTitle">{note.title}</div> : null}
             {note.text} : {formatDate(note.createdAt)}
             {note.updatedAt ? (
                 <div>Updated: {formatDate(note.updatedAt)}</div>
             ) : null}
+
         </div >
     )
 }

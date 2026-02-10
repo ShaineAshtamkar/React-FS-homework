@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import SavedNotes from "./SavedNotes";
 import { Modal, Button } from "@mantine/core";
@@ -8,7 +8,10 @@ import { Modal, Button } from "@mantine/core";
 export default function App() {
 
     const [noteText, setNoteText] = useState("")
-    const [notes, setNotes] = useState([])
+    const [notes, setNotes] = useState(() => {
+        const saved = localStorage.getItem("quicknotes-notes");
+        return saved ? JSON.parse(saved) : [];
+    });
 
     const [noteTitle, setNoteTitle] = useState("");
 
@@ -18,11 +21,30 @@ export default function App() {
     const [editTitle, setEditTitle] = useState("");
     const [editText, setEditText] = useState("");
 
+    const [noteCategory, setNoteCategory] = useState("Personal");
+    const [editCategory, setEditCategory] = useState("Personal");
+
+
+    const CATS = {
+        Personal: "#fff7ed",
+        Work: "#eff6ff",
+        School: "#f0fdf4",
+    };
+
+
+    useEffect(() => {
+        localStorage.setItem("quicknotes-notes", JSON.stringify(notes));
+    }, [notes]);
+
+
 
     function openNote(note) {
         setSelectedNote(note);
         setEditTitle(note.title || "");
         setEditText(note.text);
+
+        setEditCategory(note.category || "Personal");
+
         setOpened(true);
     }
 
@@ -39,6 +61,8 @@ export default function App() {
                     title: editTitle,
                     text: editText,
                     updatedAt: new Date().toISOString(),
+                    category: editCategory,
+
                 }
                 : n
         );
@@ -66,7 +90,9 @@ export default function App() {
         const toBeSavedNote = {
             title: noteTitle,
             text: tobeSavedtText,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            category: noteCategory
+
         }
         const newNotes = [toBeSavedNote, ...notes]
         setNotes(newNotes)
@@ -81,6 +107,7 @@ export default function App() {
         setNotes(newNotes)
     }
 
+
     return (
         <div className="page">
             <form className="form" onSubmit={handleAddNote}>
@@ -90,6 +117,12 @@ export default function App() {
                     placeholder="Title (optional)"
                     value={noteTitle}
                 />
+                <select value={noteCategory} onChange={(e) => setNoteCategory(e.target.value)}>
+                    {Object.keys(CATS).map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                    ))}
+                </select>
+
                 <textarea onChange={(e) => setNoteText(e.target.value)}
                     rows={15}
                     cols={40}
@@ -99,7 +132,7 @@ export default function App() {
                 <button type="submit" >Add</button>
             </form>
             <div className="savedNotes">
-                <SavedNotes notes={notes} onDelete={handleDeleteNote} onOpen={openNote} />
+                <SavedNotes notes={notes} onDelete={handleDeleteNote} onOpen={openNote} cats={CATS} />
             </div>
             <Modal opened={opened} onClose={closeNote} title="Edit note" centered>
                 {selectedNote ? (
@@ -107,8 +140,14 @@ export default function App() {
                         onSubmit={(e) => {
                             e.preventDefault();
                             handleUpdateNote();
-                        }}
-                    >
+                        }} >
+
+                        <select value={editCategory} onChange={(e) => setEditCategory(e.target.value)}>
+                            {Object.keys(CATS).map((c) => (
+                                <option key={c} value={c}>{c}</option>
+                            ))}
+                        </select>
+
                         <input
                             type="text"
                             placeholder="Title (optional)"
