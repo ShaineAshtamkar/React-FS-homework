@@ -1,10 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./ReactDataFlow/App.jsx";
+import App from "./QuickNotes/App.jsx";
+import "@mantine/core/styles.css";
+import { MantineProvider } from "@mantine/core";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <MantineProvider>
+      <App />
+    </MantineProvider>
   </StrictMode>
+
 );
