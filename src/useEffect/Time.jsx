@@ -14,3 +14,4 @@ export default function Time() {
     return (<div>{now.toLocaleTimeString()}</div>)
 }
 
+    

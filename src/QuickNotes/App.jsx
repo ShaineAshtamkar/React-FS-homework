@@ -24,25 +24,28 @@ export default function App() {
     const [noteCategory, setNoteCategory] = useState("Personal");
     const [editCategory, setEditCategory] = useState("Personal");
 
+    const [search, setSearch] = useState("");
+    const [activeCat, setActiveCat] = useState("All");
 
+
+    //Categories
     const CATS = {
         Personal: "#fff7ed",
         Work: "#eff6ff",
         School: "#f0fdf4",
     };
-
+    //
 
     useEffect(() => {
         localStorage.setItem("quicknotes-notes", JSON.stringify(notes));
     }, [notes]);
 
 
-
+    //Mantine
     function openNote(note) {
         setSelectedNote(note);
         setEditTitle(note.title || "");
         setEditText(note.text);
-
         setEditCategory(note.category || "Personal");
 
         setOpened(true);
@@ -100,6 +103,23 @@ export default function App() {
         setNoteTitle("");
 
     }
+
+    const filteredNotes = notes.filter((n) => {
+        const query = search.trim().toLowerCase();
+
+        const matchesText = (
+            query === "" ||
+            (n.title || "").toLowerCase().includes(query) ||
+            (n.text || "").toLowerCase().includes(query)
+        );
+        const matchesCat =
+            activeCat === "All" || activeCat === (n.category || "Personal")
+
+
+        return matchesText && matchesCat;
+
+    });
+
     function handleDeleteNote(index) {
         const ok = confirm("Are you sure you want to delete your note?");
         if (!ok) return;
@@ -111,6 +131,33 @@ export default function App() {
     return (
         <div className="page">
             <form className="form" onSubmit={handleAddNote}>
+                <div className="toolbar">
+                    <input
+                        className="searchInput"
+                        type="text"
+                        placeholder="Search notes (title or text)..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                    <div className="catFilters">
+                        <button
+                            type="button"
+                            onClick={() => setActiveCat("All")}
+                        >
+                            All
+                        </button>
+                        {Object.keys(CATS).map((c) => (
+                            <button
+                                key={c}
+                                type="button"
+                                onClick={() => setActiveCat(c)}
+                            >
+                                {c}
+                            </button>
+                        ))}
+
+                    </div>
+                </div>
                 <input
                     type="text"
                     onChange={(e) => setNoteTitle(e.target.value)}
@@ -132,9 +179,9 @@ export default function App() {
                 <button type="submit" >Add</button>
             </form>
             <div className="savedNotes">
-                <SavedNotes notes={notes} onDelete={handleDeleteNote} onOpen={openNote} cats={CATS} />
+                <SavedNotes notes={filteredNotes} onDelete={handleDeleteNote} onOpen={openNote} cats={CATS} />
             </div>
-            <Modal opened={opened} onClose={closeNote} title="Edit note" centered>
+            <Modal opened={opened} onClose={closeNote} title="Edit note" centered size="md">
                 {selectedNote ? (
                     <form
                         onSubmit={(e) => {
@@ -182,3 +229,7 @@ export default function App() {
 
     )
 }
+
+// const [isOpen, setIsOpen] = useState(false);
+
+// <Modal opened={isOpen} onClose={() => setIsOpen(false)} />
