@@ -104,6 +104,7 @@ export default function App() {
 
     }
 
+
     const filteredNotes = notes.filter((n) => {
         const query = search.trim().toLowerCase();
 
