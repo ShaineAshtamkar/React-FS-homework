@@ -10,7 +10,9 @@ import ShoppingCart from "./SimpleStateManagement/Exercise1/ShoppingCart.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <MantineProvider>
-      <App />
+      <TweetsProvider>
+        <App />
+      </TweetsProvider>
     </MantineProvider>
   </StrictMode>
 
