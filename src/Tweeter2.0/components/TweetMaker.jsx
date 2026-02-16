@@ -10,6 +10,7 @@ export default function TweetMaker() {
     const empty = text.trim().length == 0
     const disabled = tooLong || empty
 
+
     function handleTweet() {
         if (disabled) return
 

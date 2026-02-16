@@ -37,3 +37,55 @@ button:disabled {
     cursor: not-allowed;
 
 }
+
+.Maker {
+    border: 2px solid #94a3b8;
+    border-radius: 8px;
+    padding: 16px;
+    background: #0b1320;
+    margin-bottom: 16px;
+}
+
+
+.Maker textarea {
+    width: 100%;
+    height: 90px;
+    color: #e5e7eb;
+    resize: none;
+    font-size: 14px;
+    line-height: 1.4;
+    border: none;
+    background: transparent;
+
+}
+
+.tweets {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.tweetCard {
+    background: rgba(31, 41, 55, 0.9);
+    border-radius: 8px;
+    padding: 14px;
+}
+
+.tweetDetails {
+    display: flex;
+    justify-content: space-between;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.content {
+    color: #e5e7eb;
+}
+
+
+
+.error {
+    color: red;
+    font-size: 12px;
+}
