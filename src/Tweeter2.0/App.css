@@ -27,3 +27,13 @@ body {
 .navbar a.active {
     font-weight: bold;
 }
+
+button {
+    cursor: pointer;
+
+}
+
+button:disabled {
+    cursor: not-allowed;
+
+}

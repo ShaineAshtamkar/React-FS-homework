@@ -1,4 +1,6 @@
-import { useContext, useReducer, useState } from "react";
+import { createContext, useReducer, useContext } from "react";
+import { tweetsReducer, initialState } from "./TweetsReducer";
+
 
 const TweetsContext = createContext(null);
 
@@ -23,6 +25,7 @@ export function TweetsProvider({ children }) {
 }
 export function useTweets() {
     const tweetsCtx = useContext(TweetsContext)
+    return tweetsCtx
 
 }
 
