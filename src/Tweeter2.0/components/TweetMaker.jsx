@@ -14,7 +14,7 @@ export default function TweetMaker() {
     function handleTweet() {
         if (disabled) return
 
-        addTweet(text, "yonatan")
+        addTweet(text)
         setText("")
 
     }
