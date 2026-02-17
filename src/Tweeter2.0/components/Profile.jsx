@@ -7,7 +7,7 @@ export default function Profile() {
     const [name, setName] = useState(userName);
 
     function handleSaveProfile() {
-        setUserName(name.trim() || "yonatan");
+        setUserName(name.trim() || "Shaine");
     }
 
 
@@ -15,7 +15,7 @@ export default function Profile() {
         <div className="page">
             <h1>Profile</h1>
             <label className="label">User Name</label>
-            <input value={userName} onChange={(e) => setName(e.target.value)} />
+            <input value={name} onChange={(e) => setName(e.target.value)} />
             <button onClick={handleSaveProfile}>
                 Save
             </button>

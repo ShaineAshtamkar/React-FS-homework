@@ -4,17 +4,17 @@ import { useTweets } from "../context/TweetsContext";
 export default function TweetMaker() {
 
     const [text, setText] = useState("")
-    const { addTweet } = useTweets()
+    const { addTweet, isPosting } = useTweets()
 
     const tooLong = text.length > 140
     const empty = text.trim().length == 0
-    const disabled = tooLong || empty
+    const disabled = tooLong || empty || isPosting
 
 
-    function handleTweet() {
+    async function handleTweet() {
         if (disabled) return
 
-        addTweet(text)
+        await addTweet(text)
         setText("")
 
     }

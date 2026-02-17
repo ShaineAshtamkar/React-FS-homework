@@ -9,6 +9,7 @@ const savedTweets = (() => {
 export const initialState = {
     tweets: savedTweets(),
     isLoading: false,
+    isPosting: false,
     error: null
 };
 
@@ -22,6 +23,10 @@ export function tweetsReducer(state, action) {
             return {
                 ...state, error: action.data
             };
+        case "SET_POSTING":
+            return {
+                ...state, isPosting: action.data
+            }
 
         case "ADD_TWEET":
             return {

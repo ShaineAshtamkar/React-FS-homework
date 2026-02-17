@@ -9,6 +9,21 @@ const headers = {
 
 export async function fetchTweets() {
     const res = await fetch(`${BASE}?select=*&order=date.desc`, { headers })
+    if (!res.ok) throw new Error(await res.text());
+
     return await res.json();
+
+}
+
+export async function createTweet(tweet) {
+    const res = await fetch(`${BASE}`, {
+        method: "POST",
+        headers: { ...headers, Prefer: "return=representation" },
+        body: JSON.stringify(tweet),
+    });
+    if (!res.ok) throw new Error(await res.text());
+
+    const data = await res.json()
+    return data[0]
 
 }

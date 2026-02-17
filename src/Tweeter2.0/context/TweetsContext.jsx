@@ -1,6 +1,6 @@
 import { createContext, useReducer, useContext, useEffect, useState } from "react";
 import { tweetsReducer, initialState } from "./TweetsReducer";
-import { fetchTweets } from "../lib/api";
+import { fetchTweets, createTweet } from "../lib/api";
 
 
 
@@ -19,13 +19,23 @@ export function TweetsProvider({ children }) {
 
     }, [userName])
 
-    function addTweet(content) {
-        const tweet = {
+    async function addTweet(content) {
+        const tweetToSend = {
             content,
             userName,
             date: new Date().toISOString()
         }
-        dispatch({ type: "ADD_TWEET", data: tweet })
+        dispatch({ type: "SET_POSTING", data: true })
+        dispatch({ type: "SET_ERROR", data: null })
+
+        try {
+            const created = await createTweet(tweetToSend)
+            dispatch({ type: "ADD_TWEET", data: created })
+        } catch (err) {
+            dispatch({ type: "SET_ERROR", data: err.message })
+        } finally {
+            dispatch({ type: "SET_POSTING", data: false })
+        }
     }
     useEffect(() => {
         // const saved = localStorage.getItem("tweeter-tweets")
@@ -57,6 +67,8 @@ export function TweetsProvider({ children }) {
     return (
         <TweetsContext.Provider value={{
             tweets: state.tweets, addTweet, dispatch, userName, setUserName, isLoading: state.isLoading, error: state.error,
+            isPosting: state.isPosting,
+
         }}>
             {children}
         </ TweetsContext.Provider>
