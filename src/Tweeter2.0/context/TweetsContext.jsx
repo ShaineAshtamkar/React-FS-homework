@@ -1,5 +1,7 @@
 import { createContext, useReducer, useContext, useEffect, useState } from "react";
 import { tweetsReducer, initialState } from "./TweetsReducer";
+import { fetchTweets } from "../lib/api";
+
 
 
 const TweetsContext = createContext(null);
@@ -26,20 +28,36 @@ export function TweetsProvider({ children }) {
         dispatch({ type: "ADD_TWEET", data: tweet })
     }
     useEffect(() => {
-        const saved = localStorage.getItem("tweeter-tweets")
-        if (saved) {
-            const parsed = JSON.parse(saved)
-            dispatch({ type: "SET_TWEETS", data: parsed })
+        // const saved = localStorage.getItem("tweeter-tweets")
+        // if (saved) {
+        //     const parsed = JSON.parse(saved)
+        //     dispatch({ type: "SET_TWEETS", data: parsed })
+        // }
+        async function load() {
+            dispatch({ type: "SET_LOADING", data: true })
+            dispatch({ type: "SET_ERROR", data: null })
+            try {
+                const tweets = await fetchTweets()
+                dispatch({ type: "SET_TWEETS", data: tweets })
+            } catch (err) {
+                dispatch({ type: "SET_ERROR", data: err.message })
+            } finally {
+                dispatch({ type: "SET_LOADING", data: false })
+            }
         }
+        load()
 
     }, [])
 
     useEffect(() => {
-        localStorage.setItem("tweeter-tweets", JSON.stringify(state.tweets))
+        // localStorage.setItem("tweeter-tweets", JSON.stringify(state.tweets))
+
     }, [state.tweets])
 
     return (
-        <TweetsContext.Provider value={{ tweets: state.tweets, addTweet, dispatch, setUserName }}>
+        <TweetsContext.Provider value={{
+            tweets: state.tweets, addTweet, dispatch, userName, setUserName, isLoading: state.isLoading, error: state.error,
+        }}>
             {children}
         </ TweetsContext.Provider>
     )

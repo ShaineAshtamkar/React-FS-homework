@@ -3,8 +3,10 @@ import { useState } from "react";
 
 
 export default function TweetList() {
-    const { tweets } = useTweets();
+    const { tweets, isLoading, error } = useTweets();
 
+    if (isLoading) return (<div>Loading...</div>)
+    if (error) return (<div className="error">{error}</div>)
     return (
         <div className="tweets">
             {tweets.map((tweet, index) => {
